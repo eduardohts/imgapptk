@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test API TikTok</title>
+    <style>
+        body { font-family: Arial; max-width: 400px; margin: 50px auto; text-align: center; }
+        input, button { padding: 10px; margin: 5px; font-size: 16px; }
+        img { width: 200px; height: 200px; border-radius: 50%; margin-top: 20px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h2>🎵 TikTok Avatar API</h2>
+    <input type="text" id="username" placeholder="charlidamelio" value="charlidamelio">
+    <button onclick="getAvatar()">Buscar</button>
+    <div id="result"></div>
+
+    <script>
+        async function getAvatar() {
+            const username = document.getElementById('username').value;
+            const result = document.getElementById('result');
+            
+            result.innerHTML = '⏳ Cargando...';
+            
+            try {
+                const response = await fetch(`http://localhost:3000/avatar/${username}`);
+                const data = await response.json();
+                
+                if (data.avatar && data.avatar !== 'Not found' && data.avatar !== 'Error') {
+                    result.innerHTML = `<img src="${data.avatar}" alt="${username}">`;
+                } else {
+                    result.innerHTML = '<p class="error">❌ No encontrado</p>';
+                }
+            } catch (error) {
+                result.innerHTML = '<p class="error">❌ Error de conexión</p>';
+            }
+        }
+    </script>
+</body>
+</html>
